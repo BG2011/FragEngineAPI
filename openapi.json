@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "FragEngine CS2 Data API",
-    "description": "Professional-grade CS2 performance data, team statistics, and player metrics. Now with 4 flexible tiers starting from $0/mo.",
-    "version": "1.1.0"
+    "description": "Professional-grade CS2 performance data, team statistics, and player metrics. Now with 4 flexible tiers: BASIC, PRO, ULTRA, and MEGA.",
+    "version": "1.2.0"
   },
   "servers": [
     {
@@ -39,24 +39,7 @@
     },
     "/teams/{id}/players": {
       "get": {
-        "summary": "Get team roster [STARTER]",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Success" },
-          "403": { "description": "Tier Upgrade Required (STARTER+)" }
-        }
-      }
-    },
-    "/teams/{id}/map-stats": {
-      "get": {
-        "summary": "Get team map performance [PRO]",
+        "summary": "Get team roster [PRO]",
         "parameters": [
           {
             "name": "id",
@@ -71,9 +54,26 @@
         }
       }
     },
+    "/teams/{id}/map-stats": {
+      "get": {
+        "summary": "Get team map performance [ULTRA]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "403": { "description": "Tier Upgrade Required (ULTRA+)" }
+        }
+      }
+    },
     "/players/{id}/stats": {
       "get": {
-        "summary": "Get granular player metrics [ULTRA]",
+        "summary": "Get granular player metrics [MEGA]",
         "parameters": [
           {
             "name": "id",
@@ -84,13 +84,13 @@
         ],
         "responses": {
           "200": { "description": "Success" },
-          "403": { "description": "Tier Upgrade Required (ULTRA)" }
+          "403": { "description": "Tier Upgrade Required (MEGA)" }
         }
       }
     },
     "/h2h/{team1}/{team2}": {
       "get": {
-        "summary": "Historical H2H search [PRO]",
+        "summary": "Historical H2H search [ULTRA]",
         "parameters": [
           {
             "name": "team1",
@@ -107,7 +107,7 @@
         ],
         "responses": {
           "200": { "description": "Success" },
-          "403": { "description": "Tier Upgrade Required (PRO+)" }
+          "403": { "description": "Tier Upgrade Required (ULTRA+)" }
         }
       }
     }

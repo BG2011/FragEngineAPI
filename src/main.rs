@@ -128,7 +128,7 @@ async fn get_team_players(
     Path(id): Path<String>,
 ) -> Response {
     if auth.tier == "BASIC" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (STARTER, PRO, or ULTRA)").into_response();
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO, ULTRA, or MEGA)").into_response();
     }
 
     let team_uuid = if let Ok(u) = Uuid::parse_str(&id) {
@@ -155,8 +155,8 @@ async fn get_team_map_stats(
     State(state): State<Arc<AppState>>,
     Path(id): Path<String>,
 ) -> Response {
-    if auth.tier == "BASIC" || auth.tier == "STARTER" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO or ULTRA)").into_response();
+    if auth.tier == "BASIC" || auth.tier == "PRO" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ULTRA or MEGA)").into_response();
     }
 
     let team_uuid = if let Ok(u) = Uuid::parse_str(&id) {
@@ -183,8 +183,8 @@ async fn get_player_stats(
     State(state): State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Response {
-    if auth.tier != "ULTRA" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ULTRA)").into_response();
+    if auth.tier != "MEGA" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (MEGA)").into_response();
     }
 
     match state.db.get_player_map_stats(id).await {
@@ -198,8 +198,8 @@ async fn get_h2h_matches(
     State(state): State<Arc<AppState>>,
     Path((t1, t2)): Path<(String, String)>,
 ) -> Response {
-    if auth.tier == "BASIC" || auth.tier == "STARTER" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO or ULTRA)").into_response();
+    if auth.tier == "BASIC" || auth.tier == "PRO" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ULTRA or MEGA)").into_response();
     }
 
     let u1 = if let Ok(u) = Uuid::parse_str(&t1) {

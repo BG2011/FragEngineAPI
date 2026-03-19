@@ -19,9 +19,9 @@ curl -H "X-RapidAPI-Key: your_rapidapi_key" \
 ---
 
 ## 💎 Subscription Tiers
-| Feature | BASIC | STARTER | PRO | ULTRA |
+| Feature | BASIC | PRO | ULTRA | MEGA |
 | --- | :---: | :---: | :---: | :---: |
-| Price | **Free** | **$14.99/mo** | **$39.99/mo** | **$99.99/mo** |
+| Price | **Free** | **$19.99/mo** | **$49.99/mo** | **$99.99/mo** |
 | Requests / mo | 500 | 5,000 | 50,000 | 500,000 |
 | Team Lists (`/teams`) | ✅ | ✅ | ✅ | ✅ |
 | Team Details (`/teams/:id`) | ✅ | ✅ | ✅ | ✅ |
@@ -57,10 +57,10 @@ Fetch a specific team by **UUID** or **Name**.
 
 ---
 
-### 2. Rosters & Performance [STARTER+]
+### 2. Rosters & Performance [PRO+]
 
 #### `GET /teams/:id/players`
-Get the current roster for a team. [Starts at STARTER Tier]
+Get the current roster for a team. [Starts at PRO Tier]
 
 **Response Example:**
 ```json
@@ -75,7 +75,7 @@ Get the current roster for a team. [Starts at STARTER Tier]
 ```
 
 #### `GET /teams/:id/map-stats`
-Aggregate performance metrics across all maps. [Starts at PRO Tier]
+Aggregate performance metrics across all maps. [Starts at ULTRA Tier]
 
 **Response Example:**
 ```json
@@ -91,10 +91,10 @@ Aggregate performance metrics across all maps. [Starts at PRO Tier]
 
 ---
 
-### 3. Professional Analytics [ULTRA]
+### 3. Professional Analytics [MEGA]
 
 #### `GET /players/:id/stats`
-Granular player metrics broken down by map.
+Granular player metrics broken down by map. [MEGA Tier Only]
 
 **Response Example:**
 ```json
@@ -110,7 +110,7 @@ Granular player metrics broken down by map.
 ```
 
 #### `GET /h2h/:team1/:team2`
-Historical records between two teams.
+Historical records between two teams. [Starts at ULTRA Tier]
 
 ---
 

@@ -13,7 +13,7 @@ FragEngine goes beyond surface-level scores. We provide deep-dive analytics and 
 - **🚀 Ultra-Fast Integration**: Pre-built Python and JavaScript snippets get you running in under 60 seconds.
 - **📊 Granular Metrics**: Track ADR, KAST, Multi-Kill frequency, and map-specific ratings for over 500+ professional players.
 - **🛡️ Reliable Uptime**: Hosted on professional infrastructure (Render + Supabase) for dedicated performance.
-- **🔐 Tiered Access**: Scalable pricing that grows with your application—from **Free** exploration to **$99/mo** ultra-level analytics.
+- **🔐 Tiered Access**: Scalable pricing that grows with your application—from **Free** exploration to **$99/mo** mega-level analytics.
 
 ---
 
@@ -25,8 +25,8 @@ Full access to Tier 1 and Tier 2 professional teams, including historical roster
 ### 🔹 Map Performance Stats
 Detailed conversion rates for CT/T sides across all Active Duty maps (Mirage, Inferno, Nuke, etc.). Know exactly which teams dominate on specific maps before the match starts.
 
-### 🔹 ULTRA Player Analytics
-Our **ULTRA Tier** ($99.99/mo) provides access to the industry-standard "Rating 3.0" metrics, side-specific ratings, and damage-per-round (ADR) stats, all broken down by map.
+### 🔹 MEGA Player Analytics
+Our **MEGA Tier** ($99.99/mo) provides access to the industry-standard "Rating 3.0" metrics, side-specific ratings, and damage-per-round (ADR) stats, all broken down by map.
 
 ### 🔹 Head-to-Head (H2H) Archives
 Instant access to the historical records between any two teams, including map results and event context.
@@ -36,9 +36,9 @@ Instant access to the historical records between any two teams, including map re
 ## 💎 Pricing Tiers
 
 1. **BASIC**: **$0.00/mo**. Perfect for developers testing their integration. Access to team lists and basic details.
-2. **STARTER**: **$14.99/mo**. Unlock full rosters for every team. Great for community apps.
-3. **PRO**: **$39.99/mo**. Unlock map statistics and historical head-to-head data. Essential for analytical tools.
-4. **ULTRA**: **$99.99/mo**. The professional's choice. Full access to granular Player Metrics (Rating 3.0).
+2. **PRO**: **$19.99/mo**. Unlock full rosters for every team. Great for community apps.
+3. **ULTRA**: **$49.99/mo**. Unlock map statistics and historical head-to-head data. Essential for analytical tools.
+4. **MEGA**: **$99.99/mo**. The professional's choice. Full access to granular Player Metrics (Rating 3.0).
 
 ---
 
