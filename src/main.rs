@@ -65,6 +65,13 @@ impl FromRequestParts<Arc<AppState>> for AuthenticatedKey {
 
         match state.db.validate_api_key(key).await {
             Ok(Some(api_key)) => {
+                // Check Request Limit
+                if let Some(limit) = api_key.request_limit {
+                    if api_key.request_count >= limit {
+                        return Err((StatusCode::TOO_MANY_REQUESTS, "Monthly API request limit exceeded. Upgrade your tier!").into_response());
+                    }
+                }
+
                 // Background usage increment (non-blocking)
                 let db_clone = state.db.pool.clone();
                 let key_clone = key.to_string();

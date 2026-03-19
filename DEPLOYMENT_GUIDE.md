@@ -1,90 +1,65 @@
 # 🚀 FragEngine API Deployment Guide
 
-This guide provides step-by-step instructions for hosting your **FragEngine API** for free. Since the project is built in Rust and uses a PostgreSQL backend, you can host the API server independently on a free platform.
+This guide provides step-by-step instructions for hosting your **FragEngine API** for free. Since the project is now a standalone lightweight service, it builds perfectly on Render's free tier.
 
 ---
 
-## Option 1: Shuttle.rs (Recommended for Rust)
+## 🌐 Option 1: Render (Recommended)
 
-[Shuttle](https://www.shuttle.rs/) is a Cloud development platform for Rust. They have a very generous free tier and specialize in Axum servers.
+[Render](https://render.com/) is the easiest way to host this API.
 
-### 1. Install Shuttle CLI
-```bash
-curl -sSfL https://www.shuttle.rs/install | bash
-shuttle login
-```
-
-### 2. Prepare your project
-Shuttle requires a small wrapper around your `main` function. For this project, you would modify your API source to include the `#[shuttle_runtime::main]` macro.
-
-### 3. Deploy
-```bash
-shuttle deploy
-```
-Your API will be live at `https://your-project-name.shuttleapp.rs`.
-
----
-
-## Option 2: Render (Easy Docker/Static)
-
-[Render](https://render.com/) is a traditional cloud provider that supports Rust through their **Web Services** (Free tier).
-
-### 1. Create a `Dockerfile`
-Render works best with Docker. Use this optimized `Dockerfile` to avoid **Out-Of-Memory (OOM)** errors on the Free Tier:
-
-```dockerfile
-FROM rust:1.80 as builder
-RUN apt-get update && apt-get install -y pkg-config libssl-dev
-WORKDIR /usr/src/app
-COPY . .
-ENV CARGO_BUILD_JOBS=1
-RUN cargo build --release --bin api
-
-FROM debian:bookworm-slim
-RUN apt-get update && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /usr/src/app/target/release/api /usr/local/bin/api
-EXPOSE 3000
-CMD ["api"]
-```
-
-### 2. Connect your GitHub repository
+### 1. Connect your GitHub repository
 1. Go to [Render Dashboard](https://dashboard.render.com/).
 2. Select **New** -> **Web Service**.
-3. Connect your GitHub Repo.
-4. Set **Environment Variables**:
-   - `DATABASE_URL`: Your PostgreSQL connection string.
-5. Deploy!
+3. Connect your GitHub Repo: `https://github.com/BG2011/FragEngineAPI`.
+4. Render will detect the `Dockerfile` automatically.
+
+### 2. Configure Environment Variables
+In the Render dashboard, go to **Environment** and add:
+- `DATABASE_URL`: Your Supabase connection string.
+- `PORT`: `3000`
+- `RUST_LOG`: `info`
+
+### 3. Deploy!
+The build will take a few minutes (it uses 1 core to save memory). Once finished, your API will be live at `https://your-service-name.onrender.com`.
 
 ---
 
-## 🛠️ Environment Variables Checklist
+## 🔑 Managing API Keys & Tiers
 
-Regardless of where you host, you **MUST** configure these variables in the host's dashboard (secrets):
+The API enforces both **Feature Tiers** and **Numerical Limits**. Manage them via the Supabase SQL Editor:
 
-| Variable | Description |
-| --- | --- |
-| `DATABASE_URL` | Your PostgreSQL connection string. |
-| `RUST_LOG` | Set to `info` for logging (optional). |
+### Create a New Key
+```sql
+-- Create a PRO key with 50,000 requests/month
+INSERT INTO api_keys (key, tier, request_limit) 
+VALUES ('secret_pro_key_123', 'PRO', 50000);
+
+-- Create an ELITE key with 500,000 requests/month
+INSERT INTO api_keys (key, tier, request_limit) 
+VALUES ('secret_elite_key_999', 'ELITE', 500000);
+```
+
+### Reset Monthly Usage
+Run this on the 1st of every month to reset all counts:
+```sql
+UPDATE api_keys SET request_count = 0;
+```
+
+### Monitor Usage
+```sql
+SELECT key, tier, request_count, request_limit, last_used 
+FROM api_keys 
+ORDER BY request_count DESC;
+```
 
 ---
 
-## 🔑 Managing API Keys
+## 🛠️ Local Development
 
-After deploying, you can manage user access directly in your database via SQL:
-
-### Create a new Free Key
-```sql
-INSERT INTO api_keys (key, tier, request_limit) 
-VALUES ('user_abc_123', 'FREE', 1000);
-```
-
-### Create an Elite Key (Unlimited)
-```sql
-INSERT INTO api_keys (key, tier, request_limit) 
-VALUES ('company_xyz_999', 'ELITE', NULL);
-```
-
-### Revoke a Key
-```sql
-DELETE FROM api_keys WHERE key = 'revoked_key_id';
+To run the API locally:
+1. Ensure you have a `.env` file with `DATABASE_URL`.
+2. Run:
+```bash
+cargo run
 ```
