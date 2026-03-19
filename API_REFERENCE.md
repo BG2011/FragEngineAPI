@@ -19,17 +19,16 @@ curl -H "X-RapidAPI-Key: your_rapidapi_key" \
 ---
 
 ## 💎 Subscription Tiers
-
-| Feature | BASIC | PRO | ULTRA |
-| --- | :---: | :---: | :---: |
-| Price | **Free** | **$49/mo** | **$249/mo** |
-| Requests / mo | 500 | 50,000 | 500,000 |
-| Team Lists (`/teams`) | ✅ | ✅ | ✅ |
-| Team Details (`/teams/:id`) | ✅ | ✅ | ✅ |
-| Roster Data (`/players`) | ❌ | ✅ | ✅ |
-| Map Statistics (`/map-stats`) | ❌ | ✅ | ✅ |
-| **Granular Player Metrics** | ❌ | ❌ | ✅ |
-| **Historical H2H Records** | ❌ | ❌ | ✅ |
+| Feature | BASIC | STARTER | PRO | ULTRA |
+| --- | :---: | :---: | :---: | :---: |
+| Price | **Free** | **$14.99/mo** | **$39.99/mo** | **$99.99/mo** |
+| Requests / mo | 500 | 5,000 | 50,000 | 500,000 |
+| Team Lists (`/teams`) | ✅ | ✅ | ✅ | ✅ |
+| Team Details (`/teams/:id`) | ✅ | ✅ | ✅ | ✅ |
+| Roster Data (`/players`) | ❌ | ✅ | ✅ | ✅ |
+| Map Statistics (`/map-stats`) | ❌ | ❌ | ✅ | ✅ |
+| **Historical H2H Records** | ❌ | ❌ | ✅ | ✅ |
+| **Granular Player Metrics** | ❌ | ❌ | ❌ | ✅ |
 
 ---
 
@@ -58,10 +57,10 @@ Fetch a specific team by **UUID** or **Name**.
 
 ---
 
-### 2. Rosters & Performance [PRO]
+### 2. Rosters & Performance [STARTER+]
 
 #### `GET /teams/:id/players`
-Get the current roster for a team.
+Get the current roster for a team. [Starts at STARTER Tier]
 
 **Response Example:**
 ```json
@@ -76,7 +75,7 @@ Get the current roster for a team.
 ```
 
 #### `GET /teams/:id/map-stats`
-Aggregate performance metrics across all maps.
+Aggregate performance metrics across all maps. [Starts at PRO Tier]
 
 **Response Example:**
 ```json
