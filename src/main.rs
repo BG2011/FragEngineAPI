@@ -60,8 +60,9 @@ impl FromRequestParts<Arc<AppState>> for AuthenticatedKey {
     async fn from_request_parts(parts: &mut Parts, state: &Arc<AppState>) -> Result<Self, Self::Rejection> {
         let key = parts.headers
             .get("x-api-key")
+            .or_else(|| parts.headers.get("x-rapidapi-key"))
             .and_then(|v| v.to_str().ok())
-            .ok_or_else(|| (StatusCode::UNAUTHORIZED, "Missing x-api-key header").into_response())?;
+            .ok_or_else(|| (StatusCode::UNAUTHORIZED, "Missing API Key (x-api-key or x-rapidapi-key)").into_response())?;
 
         match state.db.validate_api_key(key).await {
             Ok(Some(api_key)) => {

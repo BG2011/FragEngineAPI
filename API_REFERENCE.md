@@ -7,22 +7,23 @@ Welcome to the **FragEngine API**. This professional-grade Rust API provides rea
 ## 🚀 Getting Started
 
 ### Authentication
-All requests (except `/` and `/health`) require an API key sent in the `x-api-key` header.
+All requests require an API key sent in either the `x-api-key` or `X-RapidAPI-Key` header.
 
-**Example:**
+**RapidAPI Example:**
 ```bash
-curl -H "x-api-key: your_secret_key" https://cs2-datapipeline.onrender.com/teams
+curl -H "X-RapidAPI-Key: your_rapidapi_key" \
+     -H "X-RapidAPI-Host: fragengine.p.rapidapi.com" \
+     https://cs2-datapipeline.onrender.com/teams
 ```
-
-### Base URL
-- **Production**: `https://cs2-datapipeline.onrender.com`
 
 ---
 
 ## 💎 Subscription Tiers
+
 | Feature | BASIC | PRO | ULTRA |
 | --- | :---: | :---: | :---: |
 | Price | **Free** | **$49/mo** | **$249/mo** |
+| Requests / mo | 500 | 50,000 | 500,000 |
 | Team Lists (`/teams`) | ✅ | ✅ | ✅ |
 | Team Details (`/teams/:id`) | ✅ | ✅ | ✅ |
 | Roster Data (`/players`) | ❌ | ✅ | ✅ |
@@ -32,15 +33,28 @@ curl -H "x-api-key: your_secret_key" https://cs2-datapipeline.onrender.com/teams
 
 ---
 
-## 📋 Endpoints
+## 📋 Endpoints & JSON Examples
 
-### 1. Teams [FREE]
+### 1. Teams [BASIC]
 
 #### `GET /teams`
-Returns a list of all teams in the database.
+Returns a list of all professional teams.
+
+**Response Example:**
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Natus Vincere",
+    "world_ranking": "#1",
+    "avg_player_age": "22.4"
+  }
+]
+```
 
 #### `GET /teams/:id`
-Fetch detailed information for a specific team by its **UUID** or **Name**.
+Fetch a specific team by **UUID** or **Name**.
+- **Path Param**: `id` (e.g., `natus-vincere` or `uuid`)
 
 ---
 
@@ -49,20 +63,68 @@ Fetch detailed information for a specific team by its **UUID** or **Name**.
 #### `GET /teams/:id/players`
 Get the current roster for a team.
 
+**Response Example:**
+```json
+[
+  {
+    "name": "jL",
+    "hltv_id": 19206,
+    "rating": "1.18",
+    "maps_played": 142
+  }
+]
+```
+
 #### `GET /teams/:id/map-stats`
-Fetch aggregate team performance metrics across all active duty maps (Win rates, conversion rates, etc.).
+Aggregate performance metrics across all maps.
+
+**Response Example:**
+```json
+[
+  {
+    "map_name": "Mirage",
+    "ct_rounds_won": "54.2%",
+    "t_rounds_won": "48.9%",
+    "round_win_after_first_kill": "72.4%"
+  }
+]
+```
 
 ---
 
 ### 3. Professional Analytics [ULTRA]
 
 #### `GET /players/:id/stats`
-Returns the most granular player metrics available, broken down by map.
-- `rating_3_0`: Advanced performance metric.
-- `adr`, `kast`, `multi_kill` frequency.
+Granular player metrics broken down by map.
+
+**Response Example:**
+```json
+[
+  {
+    "map_name": "Ancient",
+    "rating_3_0": "1.24",
+    "adr": "84.2",
+    "kast": "76.4%",
+    "multi_kill": "18.2%"
+  }
+]
+```
 
 #### `GET /h2h/:team1/:team2`
-Search the historical archives for matches between two specific teams.
+Historical records between two teams.
+
+---
+
+## 🛠️ Error Codes
+
+| Code | Status | Meaning |
+| --- | --- | --- |
+| `200` | OK | Request successful. |
+| `401` | Unauthorized | Missing or invalid API Key. |
+| `403` | Forbidden | Tier Upgrade Required for this endpoint. |
+| `404` | Not Found | Team or Player ID does not exist. |
+| `429` | Too Many Requests | Monthly request limit exceeded. |
+| `500` | Server Error | Internal database or server issue. |
 
 ---
 
@@ -72,20 +134,10 @@ Search the historical archives for matches between two specific teams.
 ```python
 import requests
 
-HEADERS = {"x-api-key": "your_secret_key"}
+HEADERS = {"X-RapidAPI-Key": "YOUR_KEY"}
 BASE_URL = "https://cs2-datapipeline.onrender.com"
 
-def get_team_stats(team_name):
-    response = requests.get(f"{BASE_URL}/teams/{team_name}/map-stats", headers=HEADERS)
-    return response.json()
-```
-
-### JavaScript (Fetch)
-```javascript
-const getRoster = async (teamId) => {
-  const res = await fetch(`https://cs2-datapipeline.onrender.com/teams/${teamId}/players`, {
-    headers: { "x-api-key": "your_secret_key" }
-  });
-  return res.json();
-};
+# Fetch Team Stats
+res = requests.get(f"{BASE_URL}/teams/1/map-stats", headers=HEADERS)
+print(res.json())
 ```
