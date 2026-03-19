@@ -73,7 +73,7 @@ Search the historical archives for matches between two specific teams.
 import requests
 
 HEADERS = {"x-api-key": "your_secret_key"}
-BASE_URL = "http://localhost:3000"
+BASE_URL = "https://cs2-datapipeline.onrender.com"
 
 def get_team_stats(team_name):
     response = requests.get(f"{BASE_URL}/teams/{team_name}/map-stats", headers=HEADERS)
@@ -83,7 +83,7 @@ def get_team_stats(team_name):
 ### JavaScript (Fetch)
 ```javascript
 const getRoster = async (teamId) => {
-  const res = await fetch(`http://localhost:3000/teams/${teamId}/players`, {
+  const res = await fetch(`https://cs2-datapipeline.onrender.com/teams/${teamId}/players`, {
     headers: { "x-api-key": "your_secret_key" }
   });
   return res.json();
