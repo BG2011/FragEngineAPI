@@ -1,0 +1,140 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FragEngine CS2 Data API",
+    "description": "Professional-grade CS2 performance data, team statistics, and player metrics.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://cs2-datapipeline.onrender.com",
+      "description": "Production Server"
+    }
+  ],
+  "paths": {
+    "/teams": {
+      "get": {
+        "summary": "Get all teams",
+        "description": "Returns a list of all professional teams.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Natus Vincere",
+                    "world_ranking": "#1",
+                    "avg_player_age": "22.4"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "summary": "Get team details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Team UUID or Name (slug)"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "404": { "description": "Team not found" }
+        }
+      }
+    },
+    "/teams/{id}/players": {
+      "get": {
+        "summary": "Get team roster [PRO]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "403": { "description": "Tier Upgrade Required" }
+        }
+      }
+    },
+    "/teams/{id}/map-stats": {
+      "get": {
+        "summary": "Get team map performance [PRO]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" }
+        }
+      }
+    },
+    "/players/{id}/stats": {
+      "get": {
+        "summary": "Get granular player metrics [ULTRA]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" }
+        }
+      }
+    },
+    "/h2h/{team1}/{team2}": {
+      "get": {
+        "summary": "Historical H2H search [ULTRA]",
+        "parameters": [
+          {
+            "name": "team1",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "team2",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Key"
+      }
+    }
+  },
+  "security": [
+    { "ApiKeyAuth": [] }
+  ]
+}
