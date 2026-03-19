@@ -35,9 +35,9 @@ The API enforces both **Feature Tiers** and **Numerical Limits**. Manage them vi
 INSERT INTO api_keys (key, tier, request_limit) 
 VALUES ('secret_pro_key_123', 'PRO', 50000);
 
--- Create an ELITE key with 500,000 requests/month
+-- Create an ULTRA key with 500,000 requests/month
 INSERT INTO api_keys (key, tier, request_limit) 
-VALUES ('secret_elite_key_999', 'ELITE', 500000);
+VALUES ('secret_ultra_key_999', 'ULTRA', 500000);
 ```
 
 ### Reset Monthly Usage
@@ -52,6 +52,35 @@ SELECT key, tier, request_count, request_limit, last_used
 FROM api_keys 
 ORDER BY request_count DESC;
 ```
+
+---
+
+## 🛡️ RapidAPI Security (The Master Key Strategy)
+
+To avoid manually adding every RapidAPI user to your database, you should use the **"Master Key"** secondary authentication method.
+
+### 1. Create a Master Key in Supabase
+Run this in the Supabase SQL Editor:
+```sql
+INSERT INTO api_keys (key, tier, request_limit) 
+VALUES ('RAPIDAPI_INTERNAL_MASTER_KEY_999', 'ULTRA', NULL);
+```
+
+### 2. Configure RapidAPI "Add Header" Transformation
+Follow these steps in the [RapidAPI Provider Dashboard](https://rapidapi.com/studio):
+
+1.  Go to the **"Definition"** or **"Endpoints"** tab.
+2.  Navigate to the **"Transformations"** sub-tab.
+3.  In the **"Request Transformations"** section, click **"+ Add Header"**.
+4.  **Header Name**: `x-api-key`
+5.  **Header Value**: `RAPIDAPI_INTERNAL_MASTER_KEY_999`
+6.  Check the box: **"Hide from Consumer"**.
+
+### ✅ Success!
+Now, when a user pays on RapidAPI:
+- RapidAPI validates their billing and limits.
+- RapidAPI automatically attaches your **Master Key** to the request before sending it to Render.
+- Your Render server sees the Master Key and grants full access.
 
 ---
 
