@@ -4,20 +4,6 @@ use std::error::Error;
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
 
-#[derive(Debug, thiserror::Error)]
-pub enum DbError {
-    #[error("Database error: {0}")]
-    Sqlx(#[from] sqlx::Error),
-    #[error("Internal error: {0}")]
-    Generic(String),
-}
-
-impl From<Box<dyn Error>> for DbError {
-    fn from(err: Box<dyn Error>) -> Self {
-        DbError::Generic(err.to_string())
-    }
-}
-
 pub struct Database {
     pub pool: PgPool,
 }
@@ -26,12 +12,6 @@ impl Database {
     pub async fn new(database_url: &str) -> Result<Self, Box<dyn Error>> {
         let pool = PgPool::connect(database_url).await?;
         Ok(Self { pool })
-    }
-
-    pub async fn setup_database(&self, schema_path: &str) -> Result<(), Box<dyn Error>> {
-        let schema = std::fs::read_to_string(schema_path)?;
-        sqlx::query(&schema).execute(&self.pool).await?;
-        Ok(())
     }
 
     pub async fn get_team_players(&self, team_id: Uuid) -> Result<Vec<Player>, Box<dyn Error>> {

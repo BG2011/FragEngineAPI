@@ -20,18 +20,6 @@ pub struct Team {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default, sqlx::FromRow)]
-pub struct Coach {
-    pub id: Option<Uuid>,
-    pub team_id: Option<Uuid>,
-    pub hltv_id: Option<i32>,
-    pub name: String,
-    pub time_on_team: Option<String>,
-    pub maps_coached: Option<i32>,
-    pub trophies: Option<i32>,
-    pub winrate: Option<String>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, Default, sqlx::FromRow)]
 pub struct MapStats {
     pub id: Option<Uuid>,
     pub team_id: Option<Uuid>,
@@ -41,16 +29,6 @@ pub struct MapStats {
     pub round_win_after_first_kill: Option<String>,
     pub round_win_after_first_death: Option<String>,
     pub last_updated: Option<DateTime<Utc>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, Default, sqlx::FromRow)]
-pub struct RecentMatch {
-    pub id: Option<Uuid>,
-    pub team_map_id: Option<Uuid>,
-    pub date: String,
-    pub opponent: String,
-    pub event: String,
-    pub result: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default, sqlx::FromRow)]
