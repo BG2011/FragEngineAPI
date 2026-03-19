@@ -20,9 +20,9 @@ curl -H "x-api-key: your_secret_key" https://cs2-datapipeline.onrender.com/teams
 ---
 
 ## 💎 Subscription Tiers
-
-| Feature | FREE | PRO | ELITE |
+| Feature | BASIC | PRO | ULTRA |
 | --- | :---: | :---: | :---: |
+| Price | **Free** | **$49/mo** | **$249/mo** |
 | Team Lists (`/teams`) | ✅ | ✅ | ✅ |
 | Team Details (`/teams/:id`) | ✅ | ✅ | ✅ |
 | Roster Data (`/players`) | ❌ | ✅ | ✅ |
@@ -54,7 +54,7 @@ Fetch aggregate team performance metrics across all active duty maps (Win rates,
 
 ---
 
-### 3. Professional Analytics [ELITE]
+### 3. Professional Analytics [ULTRA]
 
 #### `GET /players/:id/stats`
 Returns the most granular player metrics available, broken down by map.

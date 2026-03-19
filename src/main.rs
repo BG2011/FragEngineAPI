@@ -182,8 +182,8 @@ async fn get_player_stats(
     State(state): State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Response {
-    if auth.tier != "ELITE" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ELITE)").into_response();
+    if auth.tier != "ULTRA" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ULTRA)").into_response();
     }
 
     match state.db.get_player_map_stats(id).await {
@@ -197,8 +197,8 @@ async fn get_h2h_matches(
     State(state): State<Arc<AppState>>,
     Path((t1, t2)): Path<(String, String)>,
 ) -> Response {
-    if auth.tier != "ELITE" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ELITE)").into_response();
+    if auth.tier != "ULTRA" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (ULTRA)").into_response();
     }
 
     let u1 = if let Ok(u) = Uuid::parse_str(&t1) {

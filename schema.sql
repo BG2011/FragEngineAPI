@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS h2h_matches (
 CREATE TABLE IF NOT EXISTS api_keys (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     key TEXT UNIQUE NOT NULL,
-    tier TEXT NOT NULL CHECK (tier IN ('FREE', 'PRO', 'ELITE')),
+    tier TEXT NOT NULL CHECK (tier IN ('FREE', 'PRO', 'ULTRA')),
     request_count BIGINT DEFAULT 0,
     request_limit BIGINT,
     last_used TIMESTAMP WITH TIME ZONE,
@@ -130,4 +130,4 @@ CREATE TABLE IF NOT EXISTS api_keys (
 -- Optional: Initial Seed for testing
 -- INSERT INTO api_keys (key, tier, request_limit) VALUES ('test_free_key', 'FREE', 1000);
 -- INSERT INTO api_keys (key, tier, request_limit) VALUES ('test_pro_key', 'PRO', 10000);
--- INSERT INTO api_keys (key, tier, request_limit) VALUES ('test_elite_key', 'ELITE', NULL);
+-- INSERT INTO api_keys (key, tier, request_limit) VALUES ('test_elite_key', 'ULTRA', NULL);
