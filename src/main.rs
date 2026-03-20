@@ -126,13 +126,10 @@ async fn get_team(
 }
 
 async fn get_team_players(
-    AuthenticatedKey(auth): AuthenticatedKey,
+    _auth: AuthenticatedKey,
     State(state): State<Arc<AppState>>,
     Path(id): Path<String>,
 ) -> Response {
-    if auth.tier == "BASIC" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO, ULTRA, or MEGA)").into_response();
-    }
 
     let team_uuid = if let Ok(u) = Uuid::parse_str(&id) {
         Some(u)
@@ -182,12 +179,9 @@ async fn get_team_map_stats(
 }
 
 async fn get_players(
-    AuthenticatedKey(auth): AuthenticatedKey,
+    _auth: AuthenticatedKey,
     State(state): State<Arc<AppState>>,
 ) -> Response {
-    if auth.tier == "BASIC" {
-        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO, ULTRA, or MEGA)").into_response();
-    }
 
     match state.db.get_all_players().await {
         Ok(players) => Json(players).into_response(),

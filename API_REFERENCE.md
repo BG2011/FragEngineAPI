@@ -25,7 +25,9 @@ curl -H "X-RapidAPI-Key: your_rapidapi_key" \
 | Requests / mo | 500 | 5,000 | 50,000 | 500,000 |
 | Team Lists (`/teams`) | ✅ | ✅ | ✅ | ✅ |
 | Team Details (`/teams/:id`) | ✅ | ✅ | ✅ | ✅ |
-| Roster Data (`/players`) | ❌ | ✅ | ✅ | ✅ |
+| Global Players (`/players`) | ❌ | ✅ | ✅ | ✅ |
+| Roster Data (`/players/:id/stats`) | ❌ | ✅ | ✅ | ✅ |
+| Today's Matches (`/matches`) | ✅ | ✅ | ✅ | ✅ |
 | Map Statistics (`/map-stats`) | ❌ | ❌ | ✅ | ✅ |
 | **Historical H2H Records** | ❌ | ❌ | ✅ | ✅ |
 | **Granular Player Metrics** | ❌ | ❌ | ❌ | ✅ |
@@ -111,6 +113,25 @@ Granular player metrics broken down by map. [MEGA Tier Only]
 
 #### `GET /h2h/:team1/:team2`
 Historical records between two teams. [Starts at ULTRA Tier]
+
+#### `GET /players`
+Returns a global list of top 100 professional players. [PRO Tier+]
+
+#### `GET /matches`
+Returns a list of all CS2 matches scheduled or live for today. [BASIC Tier]
+
+**Response Example:**
+```json
+[
+  {
+    "id": "match-uuid",
+    "team1_name": "Spirit",
+    "team2_name": "FaZe",
+    "status": "LIVE",
+    "event": "PGL Major"
+  }
+]
+```
 
 ---
 

@@ -35,6 +35,7 @@ pub struct MapStats {
 pub struct Player {
     pub id: Option<Uuid>,
     pub team_id: Option<Uuid>,
+    pub team_name: Option<String>,
     pub hltv_id: i32,
     pub name: String,
     pub status: Option<String>,

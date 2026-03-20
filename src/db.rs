@@ -16,7 +16,13 @@ impl Database {
 
     pub async fn get_team_players(&self, team_id: Uuid) -> Result<Vec<Player>, Box<dyn Error>> {
         let rows = sqlx::query_as::<Postgres, Player>(
-            "SELECT * FROM players WHERE team_id = $1 ORDER BY name ASC"
+            r#"
+            SELECT p.*, t.name as team_name 
+            FROM players p 
+            LEFT JOIN teams t ON p.team_id = t.id 
+            WHERE p.team_id = $1 
+            ORDER BY p.name ASC
+            "#
         )
         .bind(team_id)
         .fetch_all(&self.pool)
@@ -129,7 +135,12 @@ impl Database {
 
     pub async fn get_all_players(&self) -> Result<Vec<Player>, Box<dyn Error>> {
         let rows = sqlx::query_as::<Postgres, Player>(
-            "SELECT * FROM players ORDER BY rating DESC NULLS LAST LIMIT 100"
+            r#"
+            SELECT p.*, t.name as team_name 
+            FROM players p 
+            LEFT JOIN teams t ON p.team_id = t.id 
+            ORDER BY p.rating DESC NULLS LAST
+            "#
         )
         .fetch_all(&self.pool)
         .await?;
