@@ -181,6 +181,23 @@ async fn get_team_map_stats(
     }
 }
 
+async fn get_players(
+    AuthenticatedKey(auth): AuthenticatedKey,
+    State(state): State<Arc<AppState>>,
+) -> Response {
+    if auth.tier == "BASIC" {
+        return (StatusCode::FORBIDDEN, "Tier Upgrade Required (PRO, ULTRA, or MEGA)").into_response();
+    }
+
+    match state.db.get_all_players().await {
+        Ok(players) => Json(players).into_response(),
+        Err(e) => {
+            eprintln!("Error fetching players: {}", e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Error fetching players").into_response()
+        }
+    }
+}
+
 async fn get_player_stats(
     AuthenticatedKey(auth): AuthenticatedKey,
     State(state): State<Arc<AppState>>,
