@@ -92,9 +92,22 @@ pub struct H2HMatch {
 pub struct ApiKey {
     pub id: Uuid,
     pub key: String,
-    pub tier: String, // "FREE", "PRO", "ELITE"
+    pub tier: String, // "BASIC", "PRO", "ULTRA", "MEGA"
     pub request_count: i64,
     pub request_limit: Option<i64>,
     pub last_used: Option<DateTime<Utc>>,
     pub created_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Default, sqlx::FromRow)]
+pub struct TodaysMatch {
+    pub id: Option<Uuid>,
+    pub status: String,
+    pub team1_id: Option<Uuid>,
+    pub team2_id: Option<Uuid>,
+    pub team1_name: String,
+    pub team2_name: String,
+    pub event: String,
+    pub link: String,
+    pub last_updated: Option<DateTime<Utc>>,
 }

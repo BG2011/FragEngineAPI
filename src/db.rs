@@ -117,4 +117,22 @@ impl Database {
         .fetch_optional(&self.pool)
         .await
     }
+
+    pub async fn get_todays_matches(&self) -> Result<Vec<TodaysMatch>, Box<dyn Error>> {
+        let rows = sqlx::query_as::<Postgres, TodaysMatch>(
+            "SELECT * FROM todays_matches ORDER BY last_updated DESC"
+        )
+        .fetch_all(&self.pool)
+        .await?;
+        Ok(rows)
+    }
+
+    pub async fn get_all_players(&self) -> Result<Vec<Player>, Box<dyn Error>> {
+        let rows = sqlx::query_as::<Postgres, Player>(
+            "SELECT * FROM players ORDER BY rating DESC NULLS LAST LIMIT 100"
+        )
+        .fetch_all(&self.pool)
+        .await?;
+        Ok(rows)
+    }
 }

@@ -12,7 +12,7 @@ use std::net::SocketAddr;
 use dotenvy::dotenv;
 use std::sync::Arc;
 use crate::db::Database;
-use crate::models::{Team, Player, MapStats, PlayerMapStats, H2HMatch, ApiKey};
+use crate::models::{Team, Player, MapStats, PlayerMapStats, H2HMatch, ApiKey, TodaysMatch};
 use uuid::Uuid;
 
 struct AppState {
@@ -37,9 +37,12 @@ async fn main() {
         .route("/teams/:id/players", get(get_team_players))
         .route("/teams/:id/map-stats", get(get_team_map_stats))
         // Players
+        .route("/players", get(get_players))
         .route("/players/:id/stats", get(get_player_stats))
         // Head-to-Head
         .route("/h2h/:t1/:t2", get(get_h2h_matches))
+        // Matches
+        .route("/matches", get(get_matches))
         .with_state(shared_state);
 
     let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
@@ -227,5 +230,18 @@ async fn get_h2h_matches(
         }
     } else {
         (StatusCode::NOT_FOUND, "One or both teams not found").into_response()
+    }
+}
+
+async fn get_matches(
+    _auth: AuthenticatedKey,
+    State(state): State<Arc<AppState>>,
+) -> Response {
+    match state.db.get_todays_matches().await {
+        Ok(matches) => Json(matches).into_response(),
+        Err(e) => {
+            eprintln!("Error fetching matches: {}", e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Error fetching matches").into_response()
+        }
     }
 }
